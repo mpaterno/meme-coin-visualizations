@@ -1,4 +1,4 @@
-// Fetch Bitcoin dominance data and Doge price data
+// Fetch Bitcoin dominance data and Phicoin price data
 Promise.all([
     d3.json('data/dominance.json'),
     d3.csv('data/meme-coins/simplified-prices.csv')
@@ -10,7 +10,7 @@ Promise.all([
 
     const allPriceData = priceData.map(d => ({
         date: new Date(d.date),
-        price: parseFloat(d.doge) || null
+        price: parseFloat(d.phicoin) || null
     })).filter(d => d.price !== null);
 
     const chartContainer = document.getElementById('bitcoinDominanceChart');
@@ -61,7 +61,7 @@ Promise.all([
         .attr('text-anchor', 'middle')
         .style('font-size', '16px')
         .style('font-weight', 'bold')
-        .text('Bitcoin Market Dominance vs Doge Price');
+        .text('Bitcoin Market Dominance vs Phicoin Price');
 
     // Create tooltip
     const tooltip = d3.select('body')
@@ -103,7 +103,7 @@ Promise.all([
         .attr('text-anchor', 'middle')
         .style('font-size', '14px')
         .style('fill', '#4f46e5')
-        .text('Doge Price (USD)');
+        .text('Phicoin Price (USD)');
 
     // Add grid lines
     const gridLinesY = svg.append('g')
@@ -355,7 +355,7 @@ Promise.all([
                     tooltip.transition().duration(200)
                         .style('opacity', 0.9);
                         
-                    tooltip.html(`<strong>${d3.timeFormat('%b %d, %Y')(d.date)}</strong><br>Doge Price: <strong>$${d.price.toFixed(4)}</strong>`)
+                    tooltip.html(`<strong>${d3.timeFormat('%b %d, %Y')(d.date)}</strong><br>Phicoin Price: <strong>$${d.price.toFixed(4)}</strong>`)
                         .style('left', (event.pageX + 10) + 'px')
                         .style('top', (event.pageY - 28) + 'px');
                 })
@@ -407,7 +407,7 @@ Promise.all([
                     
                 tooltip.html(`<strong>${d3.timeFormat('%b %d, %Y')(d_dominance.date)}</strong><br>` +
                            `BTC Dominance: <strong>${d_dominance.value.toFixed(2)}%</strong><br>` +
-                           `Doge Price: <strong>$${d_price.price.toFixed(4)}</strong>`)
+                           `Phicoin Price: <strong>$${d_price.price.toFixed(4)}</strong>`)
                     .style('left', (event.pageX + 10) + 'px')
                     .style('top', (event.pageY - 28) + 'px');
                     

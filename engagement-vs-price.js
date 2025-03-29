@@ -1,4 +1,4 @@
-// Doge Price Graph with X Engagement
+// Phi Price Graph with X Engagement
 document.addEventListener('DOMContentLoaded', function() {
 
     // Load both price and engagement data
@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
         d3.csv('data/meme-coins/simplified-prices.csv'),
         d3.csv('data/account_overview_analytics_phicoin.csv')
     ]).then(([priceData, engagementData]) => {
-        createDogePriceGraph(priceData, engagementData);
+        createPhiPriceGraph(priceData, engagementData);
     }).catch(error => {
         console.error('Error loading data:', error);
-        document.getElementById('dogePriceGraph').innerHTML = '<p>Error loading data</p>';
+        document.getElementById('phiPriceGraph').innerHTML = '<p>Error loading data</p>';
     });
 
     // Compute Pearson Correlation
@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return denominator === 0 ? 0 : numerator / denominator;
     }
 
-    function createDogePriceGraph(priceData, engagementData) {
+    function createPhiPriceGraph(priceData, engagementData) {
         // Parse price data
         priceData.forEach(d => {
             d.date = new Date(d.date);
-            d.doge = +d.doge;
+            d.phicoin = +d.phicoin;
         });
 
         // Parse engagement data
@@ -47,10 +47,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Filter out null and 0 values
-        priceData = priceData.filter(d => d.doge !== null && d.doge !== 0);
+        priceData = priceData.filter(d => d.phicoin !== null && d.phicoin !== 0);
 
         // Set up dimensions
-        const container = document.getElementById('dogePriceGraph');
+        const container = document.getElementById('phiPriceGraph');
         const margin = {top: 40, right: 80, bottom: 90, left: 60};
         const width = container.clientWidth - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(filterContainer);
 
         // Create SVG
-        const svg = d3.select('#dogePriceGraph')
+        const svg = d3.select('#phiPriceGraph')
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('text-anchor', 'middle')
             .style('font-size', '16px')
             .style('font-weight', 'bold')
-            .text('Doge Price Over Time (Circle size = X Engagements)');
+            .text('Phi Price Over Time (Circle size = X Engagements)');
 
         svg.append('text')
             .attr('transform', 'rotate(-90)')
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update scales
             x.domain(d3.extent(filteredPriceData, d => d.date));
-            y.domain([0, d3.max(filteredPriceData, d => d.doge) * 1.1]);
+            y.domain([0, d3.max(filteredPriceData, d => d.phicoin) * 1.1]);
             r.domain([0, d3.max(filteredEngagementData, d => d.Engagements)]);
 
             // Update axes
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .duration(750)
                 .attr('d', d3.line()
                     .x(d => x(d.date))
-                    .y(d => y(d.doge))
+                    .y(d => y(d.phicoin))
                     .curve(d3.curveMonotoneX));
 
             // Update area
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr('d', d3.area()
                     .x(d => x(d.date))
                     .y0(height)
-                    .y1(d => y(d.doge))
+                    .y1(d => y(d.phicoin))
                     .curve(d3.curveMonotoneX));
 
             // Update engagement circles
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const pricePoint = filteredPriceData.find(p => 
                         p.date.toDateString() === d.parsedDate.toDateString()
                     );
-                    return pricePoint ? y(pricePoint.doge) : height;
+                    return pricePoint ? y(pricePoint.phicoin) : height;
                 })
                 .attr('r', d => r(d.Engagements))
                 .attr('fill', '#1DA1F2')
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const pricePoint = filteredPriceData.find(p => 
                     p.date.toDateString() === d.parsedDate.toDateString()
                 );
-                return pricePoint ? {engagement: d.Engagements, price: pricePoint.doge} : null;
+                return pricePoint ? {engagement: d.Engagements, price: pricePoint.phicoin} : null;
             }).filter(d => d !== null);
 
             if (matchedData.length > 1) {
